@@ -11,7 +11,7 @@ function initialize()
     var myLatlng = new google.maps.LatLng(42.419001, -71.109858);
       map = new google.maps.Map(document.getElementById("map_canvas"),
     {
-        zoom: 16,
+        zoom: 13,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -35,98 +35,9 @@ function placeMarker(location)
 </script>
 </head>
 <body onload="initialize()" onunload=GUnload()>
-<div id="map_canvas" style="width: 500px; height: 300px"></div>
-<div id="text_coords" style="position: absolute; top:60px; left:600px; width:360px; height:600px; text-align:left">
+<div id="map_canvas" style="width: 600px; height: 400px"></div>
+<div id="text_coords" style="position: absolute; center:60px; left:600px; width:360px; height:600px; text-align:left">
 <input type="text" id="points">
-</div>
-<div>
-<!-- Include the Google CSS package -->
-<link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons.css">
- 
-<!-- You can also include your own CSS styles -->
-<style>
-  form { margin: 40px auto; }
-  input { display:inline-block; margin: 20px; }
-</style>
- 
-<script>
-  
-  // The function will be called after the form is submitted
-  function uploadFile() {
-    document.getElementById('uploadFile').value("Uploading File..");
-    google.script.run
-       .withSuccessHandler(fileUploaded)
-       .uploadFiles(document.getElementById("labnol"));
-    return false;
-  }
- 
-  // This function will be called after the Google Script has executed
-  function fileUploaded(status) {
-    document.getElementById('labnol').style.display = 'none';
-    document.getElementById('output').innerHTML = status;
-  }
-  
-</script>
- 
-<!-- This is the HTML form -->
-<form id="labnol">
- 
-  <!-- Text input fields -->
-  <input type="text" name="myName" placeholder="Your name..">
-  <input type="email" name="myEmail" placeholder="Your email..">
- 
-  <!-- File input filed -->
-  <input type="file" name="myFile">
- 
-  <!-- The submit button. It calls the server side function uploadfiles() on click -->
-  <input type="submit" id="uploadFile" value="Upload File" 
-         onclick="this.value='Uploading..';uploadFile();">
- 
-</form>
- 
-<!-- Here the results of the form submission will be displayed -->
-<div id="output"></div>
-
-/* The script is deployed as a web app and renders the form */
-function doGet(e) {
-  return HtmlService.createHtmlOutputFromFile('form.html')
-            .setSandboxMode(HtmlService.SandboxMode.NATIVE);
-  // This is important as file upload fail in IFRAME Sandbox mode.
-}
- 
-/* This function will process the submitted form */
-function uploadFiles(form) {
-  
-  try {
-    
-    /* Name of the Drive folder where the files should be saved */
-    var dropbox = form.myName + " " + form.myEmail;
-    var folder, folders = DriveApp.getFoldersByName(dropbox);
-    
-    /* Find the folder, create if the folder does not exist */
-    if (folders.hasNext()) {
-      folder = folders.next();
-    } else {
-      folder = DriveApp.createFolder(dropbox);
-    }
-    
-    /* Get the file uploaded though the form as a blob */
-    var blob = form.myFile;    
-    var file = folder.createFile(blob);    
-    
-    /* Set the file description as the name of the uploader */
-    file.setDescription("Uploaded by " + form.myName);
-        
-    /* Return the download URL of the file once its on Google Drive */
-    return "File uploaded successfully " + file.getUrl();
-    
-  } catch (error) {
-    
-    /* If there's an error, show the error message */
-    return error.toString();
-  }
-  
-}
 </div>
 </body>
 </html>
